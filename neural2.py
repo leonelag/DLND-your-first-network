@@ -1,8 +1,5 @@
 import numpy as np
 
-def sigmoid(x):
-    return 1.0 / (1.0 + np.exp(-x))
-
 class NeuralNetwork(object):
     def __init__(self, input_nodes, hidden_nodes, output_nodes, learning_rate):
         # Set number of nodes in input, hidden and output layers.
@@ -21,7 +18,7 @@ class NeuralNetwork(object):
         
         #### Set this to your implemented sigmoid function ####
         # Activation function is the sigmoid function
-        self.activation_function = sigmoid
+        self.activation_function = lambda x: 1.0 / (1.0 + np.exp(-x))
     
     def train(self, inputs_list, targets_list):
         # Convert inputs list to 2d array
@@ -30,19 +27,16 @@ class NeuralNetwork(object):
         
         #### Implement the forward pass here ####
         ### Forward pass ###
-        # TODO: Hidden layer
+        # Hidden layer
         hidden_inputs = np.dot(self.weights_input_to_hidden, inputs)
-        hidden_outputs = np.array([self.activation_function(input) 
-                                   for input in hidden_inputs],
-                                  ndmin=2)
+        hidden_outputs = self.activation_function(hidden_inputs)
 
-        # TODO: Output layer
+        # Output layer
         final_inputs = np.dot(self.weights_hidden_to_output, hidden_outputs)
-        
         # in output layer, use identity function as activation
         final_outputs = final_inputs
 
-        # TODO: Output error
+        # Output error
         output_errors = targets - final_outputs
         
         # TODO: Backpropagated error
@@ -67,7 +61,7 @@ class NeuralNetwork(object):
         inputs = np.array(inputs_list, ndmin=2).T
         
         #### Implement the forward pass here ####
-        # TODO: Hidden layer
+        # Hidden layer
         hidden_inputs  = np.dot(self.weights_input_to_hidden, inputs)
         hidden_outputs = np.array([self.activation_function(input) 
                                    for input in hidden_inputs],
